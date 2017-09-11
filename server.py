@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect,session, flash
+import re
 app = Flask(__name__)
 app.secret_key = 'ThisIsSecret'
+
+r = re.compile(r'[a-zA-Z]+')
 
 dev = True
 
@@ -10,33 +13,32 @@ def my_portfolio():
 
 @app.route('/process', methods=['POST'])
 def create_info():
-    # print "Got user info"
-    # print request.form['name']
-    # print request.form['location']
-    # print request.form['language'] 
-    # print request.form['comment']
-
-    if len(request.form['name']) < 1:
-        flash("Name cannot be empty!")
-    if len(request.form['comment']) < 1 or len(request.form['comment']) > 120:
-        print "Hello"
-        flash("Comment must be more then 0 and less then 120 characters!")
-    else:
-        session['name'] = request.form['name']
-        session['location'] = request.form['location']
-        session['language'] = request.form['language']
-        session['comment'] = request.form['comment']
-        return redirect('/about')
-    return redirect('/')
+    for key in request.form.keys():
+        print request.form[key]
+        if len(request.form[key]) < 1:
+            flash("All fields are required")
+        elif not request.form['first_name'].isalpha(): 
+            flash("Invalid  first name!")
+        elif not request.form['last_name'].isalpha():
+            print "ture"
+            flash("Invalid Last Name!")
+        elif len(request.form['password']) < 9:
+            flash("Password must be more then 8 char!")
+        elif request.form['confirm_password'] != request.form['password']: 
+            flash("Passwords do not match!")
+        else:
+            session['email'] = request.form['email']
+            session['first_name'] = request.form['first_name']
+            session['last_name'] = request.form['last_name']
+            session['password'] = request.form['password']
+            session['confirm_password'] = request.form['confirm_password']
+            return redirect('/about')
+        return redirect('/')
 
 @app.route('/about')
 def show_user():
-    # print "Got user info"
-    # print session['name']
-    # print session['location']
-    # print session['language'] 
-    # print session['comment']
-    return render_template('about.html', name=session['name'], location=session['location'], language=session['language'], comment=session['comment'])
+    print "Show user"
+    return render_template('about.html', email=session['email'], first_name=session['first_name'], last_name=session['last_name'], password=session['password'])
 
 @app.route('/back', methods=['GET'])
 def back():

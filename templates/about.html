@@ -10,17 +10,21 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-    <div class="container">
-        <h3>Submitted Info</h3>
-        <p>Name: {{name}}</p>
-        <p>Dojo Location: {{location}}</p>
-        <p>Favorite Language: {{language}}</p>
-        <p>Comment: {{comment}}</p>
-    <form action='/back' method='get'>
-        <button action='/index' type="submit" class="btn btn-default">Back</button>
-    </form>
-    </div>
-</body>
+    <body>
+        <div class="container jumbotron">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>Success!</strong> You are now Signed in.
+            </div>
+            <h3>Submitted Info</h3>
+            <p>Email: {{email}}</p>
+            <p>First Name: {{first_name}}</p>
+            <p>Last Name: {{last_name}}</p>
+            <p>Password: {{password}}</p>
+            <form action='/back' method='get'>
+                <button action='/index' type="submit" class="btn btn-default">Sign Out</button>
+            </form>
+        </div>
+    </body>
 
 </html>
